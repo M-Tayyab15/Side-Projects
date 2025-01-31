@@ -1,9 +1,20 @@
 <?php
-// Include the quotes.php file to access the quotes array
+// Include the quotes.php file to access the quotes arrays
 include('quotes.php');
 
-// Get a random quote from the quotes array
-$randomQuote = $quotes[array_rand($quotes)];
+// Check which type of quote to display
+$quoteCategory = isset($_GET['category']) ? $_GET['category'] : 'all';
+
+// Get a random quote from the selected category
+if ($quoteCategory == 'muslim') {
+    $randomQuote = $muslimQuotes[array_rand($muslimQuotes)];
+} else if ($quoteCategory == 'other') {
+    $randomQuote = $otherQuotes[array_rand($otherQuotes)];
+} else {
+    // Default to a random quote from both categories
+    $allQuotes = array_merge($muslimQuotes, $otherQuotes);
+    $randomQuote = $allQuotes[array_rand($allQuotes)];
+}
 ?>
 
 <!DOCTYPE html>
@@ -82,6 +93,31 @@ $randomQuote = $quotes[array_rand($quotes)];
         .btn:active {
             transform: scale(1); /* Reset scale when clicked */
         }
+
+        .category-buttons {
+            margin-top: 40px;
+        }
+
+        .category-buttons a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 25px;
+            background-color: #4ECDC4;
+            color: #fff;
+            font-size: 1.2em;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .category-buttons a:hover {
+            background-color: #36A39A;
+            transform: scale(1.05);
+        }
+
+        .category-buttons a:active {
+            transform: scale(1);
+        }
     </style>
 </head>
 <body>
@@ -89,7 +125,10 @@ $randomQuote = $quotes[array_rand($quotes)];
 <div class="quote-container">
     <h1>Random Quote</h1>
     <p><?php echo $randomQuote; ?></p>
-    <a class="btn" href="index.php">New Quote</a>
+    <div class="category-buttons">
+        <a href="index.php?category=muslim" class="btn">Muslim Quotes</a>
+        <a href="index.php?category=other" class="btn">Other Quotes</a>
+    </div>
 </div>
 
 </body>
